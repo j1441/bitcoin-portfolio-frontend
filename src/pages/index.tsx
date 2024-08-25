@@ -5,15 +5,18 @@ const HomePage = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-orange-300 text-center p-6">
       <h1 className="text-4xl font-bold text-white mb-6">Welcome to the Bitcoin Portfolio Tracker</h1>
-      <p className="text-white mb-4">
-        This application allows you to track your Bitcoin holdings and view the
-        current value of your portfolio.
-      </p>
-      <p className="text-white mb-8">
-        Built with a modern tech stack including Next.js, React, TypeScript, and
-        a Go-based backend, this project was developed to showcase my skills in
-        full-stack development. A mobile iOS app is also available at ... built using Flutter.
-      </p>
+      
+      <div className="bg-white p-6 rounded shadow-md max-w-2xl mb-8">
+        <p className="text-gray-800 mb-4">
+          This application allows you to track your Bitcoin holdings and view the
+          current value of your portfolio.
+        </p>
+        <p className="text-gray-800 mb-4">
+          Built with a modern tech stack including Next.js, React, TypeScript, and
+          a Go-based backend, this project was developed to showcase my skills in
+          full-stack development. A mobile iOS app is also available at ... built using Flutter.
+        </p>
+      </div>
 
       <div className="mb-8">
         <img
