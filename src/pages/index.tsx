@@ -19,7 +19,7 @@ const HomePage = () => {
         <img
           src="/bitcoin.png"
           alt="Bitcoin"
-          style={{ maxWidth: '100%', height: 'auto' }}
+          style={{ maxWidth: '10%', height: 'auto' }}
         />
       </div>
 
