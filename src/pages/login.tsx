@@ -12,7 +12,6 @@ const Login = () => {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            console.log('API URL:', process.env.NEXT_PUBLIC_API_URL);
             await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
                 email,
                 password,
@@ -26,7 +25,7 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-orange-100">
             <Navigation />
             <div className="bg-white p-6 rounded shadow-md w-80">
                 <h1 className="text-3xl font-bold text-orange-600 mb-6">Login</h1>
