@@ -12,8 +12,6 @@ const Login = () => {
         e.preventDefault();
         try {
             console.log('API URL:', process.env.NEXT_PUBLIC_API_URL);
-            console.error('API URL (error):', process.env.NEXT_PUBLIC_API_URL);
-            console.warn('API URL (warn):', process.env.NEXT_PUBLIC_API_URL);
             await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
                 email,
                 password,
@@ -22,8 +20,6 @@ const Login = () => {
             router.push('/portfolio');
         } catch (error) {
             console.error('Login error:', error);
-            console.error('This is an error log');
-            console.warn('This is a warning log');
             setMessage('Login failed');
         }
     };
