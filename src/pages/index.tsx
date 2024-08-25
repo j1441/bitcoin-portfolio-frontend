@@ -19,7 +19,7 @@ const HomePage = () => {
         <img
           src="/bitcoin.png"
           alt="Bitcoin"
-          className="w-12 h-auto mx-auto" /* Further reduced size */
+          style={{ width: '50px', height: 'auto' }} // Set fixed size
         />
       </div>
 
