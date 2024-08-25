@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Apply a simple CSS reset */
 * {
     margin: 0;
@@ -5,10 +9,10 @@
     box-sizing: border-box;
 }
 
+/* Custom global styles */
 body {
+    @apply bg-orange-500 text-gray-800; /* Use Tailwind's classes for consistent theming */
     font-family: Arial, sans-serif;
-    background-color: #FFA500; /* Bitcoin orange background */
-    color: #333;
     padding: 20px;
     min-height: 100vh;
 }
@@ -30,14 +34,12 @@ input {
 }
 
 button {
-    background-color: #FFFFFF;
-    color: #FFA500;
+    @apply bg-white text-orange-500 font-bold; /* Use Tailwind's classes */
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-weight: bold;
 }
 
 button:hover {
-    background-color: #ffcc80;
+    @apply bg-orange-200; /* Use Tailwind's hover state */
 }
