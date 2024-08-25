@@ -11,6 +11,7 @@ const Login = () => {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            console.log('API URL:', process.env.NEXT_PUBLIC_API_URL);
             await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
                 email,
                 password,
@@ -18,6 +19,7 @@ const Login = () => {
             setMessage('Login successful');
             router.push('/portfolio');
         } catch (error) {
+            console.error('Login error:', error);
             setMessage('Login failed');
         }
     };
