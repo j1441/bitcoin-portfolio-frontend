@@ -12,7 +12,7 @@ const HomePage = () => {
       <p className="text-white mb-8">
         Built with a modern tech stack including Next.js, React, TypeScript, and
         a Go-based backend, this project was developed to showcase my skills in
-        full-stack development.
+        full-stack development. A mobile iOS app is also available at ... built using Flutter.
       </p>
 
       <div className="mb-8">
@@ -24,17 +24,17 @@ const HomePage = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-md">
-        <Link href="/login">
+        <Link href="/login" passHref>
           <a className="text-white bg-orange-500 px-6 py-4 rounded shadow hover:bg-orange-600 transition duration-300 text-lg text-center">
             Log In
           </a>
         </Link>
-        <Link href="/signup">
+        <Link href="/signup" passHref>
           <a className="text-white bg-orange-500 px-6 py-4 rounded shadow hover:bg-orange-600 transition duration-300 text-lg text-center">
             Sign Up
           </a>
         </Link>
-        <Link href="/about">
+        <Link href="/about" passHref>
           <a className="text-white bg-orange-700 px-6 py-4 rounded shadow hover:bg-orange-800 transition duration-300 font-bold text-lg text-center">
             About This Project
           </a>
