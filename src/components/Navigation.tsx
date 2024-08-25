@@ -2,8 +2,13 @@ import Link from 'next/link';
 
 const Navigation = () => {
     return (
-        <nav className="bg-orange-500 text-white py-4">
+        <nav className="bg-orange-500 text-white py-4 px-6">
             <div className="container mx-auto flex justify-center space-x-4">
+                <Link href="/">
+                    <a className="block text-white bg-orange-500 px-6 py-2 rounded shadow hover:bg-orange-600 transition duration-300 text-lg no-underline">
+                        Home
+                    </a>
+                </Link>
                 <Link href="/login">
                     <a className="block text-white bg-orange-500 px-6 py-2 rounded shadow hover:bg-orange-600 transition duration-300 text-lg no-underline">
                         Log In
