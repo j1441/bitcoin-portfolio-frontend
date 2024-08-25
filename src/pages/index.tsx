@@ -14,7 +14,7 @@ const HomePage = () => {
         <p className="text-gray-800 mb-4">
           Built with a modern tech stack including Next.js, React, TypeScript, and
           a Go-based backend, this project was developed to showcase my skills in
-          full-stack development. A mobile iOS app is also available at (waiting for Apple Developer account to be granted by Apple, iOS app is otherwise working) built using Flutter.
+          full-stack development. A mobile iOS app is also available at (waiting for beta review in order to provide TestFlight link, iOS app is otherwise working) built using Flutter.
         </p>
       </div>
 
