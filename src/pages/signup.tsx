@@ -21,7 +21,7 @@ const Signup = () => {
     };
 
     return (
-        <div className="min-h-screen bg-orange-100 flex flex-col items-center justify-center">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-orange-100">
             <Navigation />
             <div className="bg-white p-6 rounded shadow-md w-80">
                 <h1 className="text-3xl font-bold text-orange-600 mb-6">Signup</h1>

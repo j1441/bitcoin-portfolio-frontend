@@ -61,9 +61,9 @@ const Portfolio = () => {
     };
 
     return (
-        <div className="min-h-screen bg-orange-100">
+        <div className="min-h-screen flex flex-col items-center bg-orange-100">
             <Navigation />
-            <div className="container mx-auto p-6">
+            <div className="container mx-auto p-6 bg-white rounded shadow-md">
                 <h1 className="text-4xl font-bold text-orange-600 mb-6">Your Portfolios</h1>
                 <ul className="space-y-4">
                     {portfolios.map((portfolio) => (
