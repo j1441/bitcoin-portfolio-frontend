@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-orange-100 text-center p-6">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-orange-300 text-center p-6">
       <h1 className="text-4xl font-bold text-white mb-6">Welcome to the Bitcoin Portfolio Tracker</h1>
       <p className="text-white mb-4">
         This application allows you to track your Bitcoin holdings and view the
