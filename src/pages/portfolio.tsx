@@ -61,35 +61,54 @@ const Portfolio = () => {
     };
 
     return (
-        <div>
+        <div className="min-h-screen bg-orange-100">
             <Navigation />
-            <h1>Your Portfolios</h1>
-            <ul>
-                {portfolios.map((portfolio) => (
-                    <li key={portfolio.id}>
-                        {portfolio.name}: {portfolio.amount} BTC (${portfolio.value_usd.toFixed(2)})
-                        <button onClick={() => handleDeletePortfolio(portfolio.id)}>Delete</button>
-                    </li>
-                ))}
-            </ul>
-            <h2>Create New Portfolio</h2>
-            <form onSubmit={handleCreatePortfolio}>
-                <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Portfolio Name"
-                    required
-                />
-                <input
-                    type="number"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    placeholder="Amount (BTC)"
-                    required
-                />
-                <button type="submit">Create</button>
-            </form>
+            <div className="container mx-auto p-6">
+                <h1 className="text-4xl font-bold text-orange-600 mb-6">Your Portfolios</h1>
+                <ul className="space-y-4">
+                    {portfolios.map((portfolio) => (
+                        <li key={portfolio.id} className="bg-white p-4 rounded shadow-md flex justify-between items-center">
+                            <div>
+                                <h2 className="text-2xl font-semibold text-orange-800">{portfolio.name}</h2>
+                                <p className="text-gray-700">{portfolio.amount} BTC (${portfolio.value_usd.toFixed(2)})</p>
+                            </div>
+                            <button
+                                onClick={() => handleDeletePortfolio(portfolio.id)}
+                                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
+                            >
+                                Delete
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+                <div className="mt-8">
+                    <h2 className="text-3xl font-bold text-orange-600 mb-4">Create New Portfolio</h2>
+                    <form onSubmit={handleCreatePortfolio} className="space-y-4">
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="Portfolio Name"
+                            required
+                            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-orange-500"
+                        />
+                        <input
+                            type="number"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                            placeholder="Amount (BTC)"
+                            required
+                            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-orange-500"
+                        />
+                        <button
+                            type="submit"
+                            className="bg-orange-500 text-white px-6 py-3 rounded shadow hover:bg-orange-600 transition duration-300"
+                        >
+                            Create
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     );
 };
