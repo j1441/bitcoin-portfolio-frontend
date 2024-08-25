@@ -12,6 +12,8 @@ const Login = () => {
         e.preventDefault();
         try {
             console.log('API URL:', process.env.NEXT_PUBLIC_API_URL);
+            console.error('API URL (error):', process.env.NEXT_PUBLIC_API_URL);
+            console.warn('API URL (warn):', process.env.NEXT_PUBLIC_API_URL);
             await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
                 email,
                 password,
