@@ -16,7 +16,7 @@ const Portfolio = () => {
     useEffect(() => {
         const fetchPortfolios = async () => {
             try {
-                const response = await axios.get('http://numerisgroup.xyz/portfolios', { withCredentials: true });
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/portfolios`, { withCredentials: true });
                 setPortfolios(response.data);
             } catch (error) {
                 console.error('Failed to fetch portfolios', error);
@@ -29,13 +29,13 @@ const Portfolio = () => {
     const handleCreatePortfolio = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await axios.post('http://numerisgroup.xyz/portfolio', {
+            await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/portfolio`, {
                 name,
                 amount: parseFloat(amount),
             }, { withCredentials: true });
             setName('');
             setAmount('');
-            const response = await axios.get('http://numerisgroup.xyz/portfolios', { withCredentials: true });
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/portfolios`, { withCredentials: true });
             setPortfolios(response.data);
         } catch (error) {
             console.error('Failed to create portfolio', error);

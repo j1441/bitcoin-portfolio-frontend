@@ -9,7 +9,7 @@ const Signup = () => {
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://numerisgroup.xyz/signup', {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/signup`, {
                 email,
                 password,
             });

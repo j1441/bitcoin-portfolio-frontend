@@ -11,7 +11,7 @@ const Login = () => {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await axios.post('http://numerisgroup.xyz/login', {
+            await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
                 email,
                 password,
             }, { withCredentials: true });
