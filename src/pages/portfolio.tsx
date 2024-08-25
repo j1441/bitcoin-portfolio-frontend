@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Navigation from '../components/Navigation';
 
 interface Portfolio {
     id: number;
@@ -44,6 +45,7 @@ const Portfolio = () => {
 
     return (
         <div>
+            <Navigation />
             <h1>Your Portfolios</h1>
             <ul>
                 {portfolios.map((portfolio) => (

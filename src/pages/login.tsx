@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import Navigation from '../components/Navigation';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -26,6 +27,7 @@ const Login = () => {
 
     return (
         <div>
+            <Navigation />
             <h1>Login</h1>
             <form onSubmit={handleLogin}>
                 <input

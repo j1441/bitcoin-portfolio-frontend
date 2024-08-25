@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import Navigation from '../components/Navigation';
 
 const Signup = () => {
     const [email, setEmail] = useState('');
@@ -21,6 +22,7 @@ const Signup = () => {
 
     return (
         <div>
+            <Navigation />
             <h1>Signup</h1>
             <form onSubmit={handleSignup}>
                 <input
