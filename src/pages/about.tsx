@@ -2,7 +2,7 @@ import Navigation from '../components/Navigation';
 
 const About = () => {
     return (
-        <div className="min-h-screen bg-orange-300 p-6 flex flex-col items-center">
+        <div className="min-h-screen bg-orange-300 p-6 flex flex-col items-center justify-center">
             <Navigation />
             <div className="bg-white p-6 rounded shadow-md max-w-4xl mx-auto">
                 <h1 className="text-4xl font-bold text-orange-600 mb-6">About This Project</h1>
