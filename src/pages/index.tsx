@@ -19,23 +19,23 @@ const HomePage = () => {
         <img
           src="/bitcoin.png"
           alt="Bitcoin"
-          style={{ width: '80px', height: 'auto' }} // Slightly larger size
+          style={{ width: '100px', height: 'auto' }} // Slightly larger size
         />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-md">
-        <Link href="/login" passHref>
-          <a className="text-white bg-orange-500 px-6 py-4 rounded shadow hover:bg-orange-600 transition duration-300 text-lg text-center">
+        <Link href="/login">
+          <a className="block text-white bg-orange-500 px-6 py-4 rounded shadow hover:bg-orange-600 transition duration-300 text-lg">
             Log In
           </a>
         </Link>
-        <Link href="/signup" passHref>
-          <a className="text-white bg-orange-500 px-6 py-4 rounded shadow hover:bg-orange-600 transition duration-300 text-lg text-center">
+        <Link href="/signup">
+          <a className="block text-white bg-orange-500 px-6 py-4 rounded shadow hover:bg-orange-600 transition duration-300 text-lg">
             Sign Up
           </a>
         </Link>
-        <Link href="/about" passHref>
-          <a className="text-white bg-orange-700 px-6 py-4 rounded shadow hover:bg-orange-800 transition duration-300 font-bold text-lg text-center">
+        <Link href="/about">
+          <a className="block text-white bg-orange-700 px-6 py-4 rounded shadow hover:bg-orange-800 transition duration-300 font-bold text-lg">
             About This Project
           </a>
         </Link>
