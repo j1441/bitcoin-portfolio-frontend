@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Apply a simple CSS reset */
 * {
     margin: 0;
     padding: 0;
@@ -11,15 +10,15 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #FF8C00; /* Darker orange background */
-    color: #FFFFFF; /* White text for better contrast */
+    background-color: #FF8C00;
+    color: #FFFFFF;
     padding: 20px;
     min-height: 100vh;
 }
 
 h1, h2, h3 {
     margin-bottom: 20px;
-    color: #FFFFFF; /* White text for titles */
+    color: #FFFFFF;
 }
 
 input, button {
@@ -35,7 +34,7 @@ input {
 
 button {
     background-color: #FFFFFF;
-    color: #FF8C00; /* Match button text with background color */
+    color: #FF8C00;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -43,5 +42,5 @@ button {
 }
 
 button:hover {
-    background-color: #FFB347; /* Slightly lighter shade of orange for hover effect */
+    background-color: #FFB347;
 }
