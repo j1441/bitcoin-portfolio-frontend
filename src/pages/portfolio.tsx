@@ -43,6 +43,23 @@ const Portfolio = () => {
         }
     };
 
+    const handleDeletePortfolio = async (id: number) => {
+        if (confirm('Are you sure you want to delete this portfolio?')) {
+            try {
+                await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/portfolio/delete`, {
+                    data: { id },
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                setPortfolios(portfolios.filter((portfolio) => portfolio.id !== id));
+            } catch (error) {
+                console.error('Failed to delete portfolio', error);
+            }
+        }
+    };
+
     return (
         <div>
             <Navigation />
@@ -51,6 +68,7 @@ const Portfolio = () => {
                 {portfolios.map((portfolio) => (
                     <li key={portfolio.id}>
                         {portfolio.name}: {portfolio.amount} BTC (${portfolio.value_usd.toFixed(2)})
+                        <button onClick={() => handleDeletePortfolio(portfolio.id)}>Delete</button>
                     </li>
                 ))}
             </ul>
