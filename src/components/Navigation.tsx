@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const Navigation = () => {
     return (
-        <nav className="bg-orange-500 text-white py-4 px-6">
+        <nav className="bg-orange-500 text-white py-4 px-6 mb-6"> {/* Added mb-6 for bottom margin */}
             <div className="container mx-auto flex justify-center space-x-4">
                 <Link href="/">
                     <a className="block text-white bg-orange-500 px-6 py-2 rounded shadow hover:bg-orange-600 transition duration-300 text-lg no-underline">

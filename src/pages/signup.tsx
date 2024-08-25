@@ -32,7 +32,7 @@ const Signup = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Email"
                         required
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className="w-full p-2 border border-gray-300 rounded text-gray-800" // Added text-gray-800
                     />
                     <input
                         type="password"
@@ -40,7 +40,7 @@ const Signup = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Password"
                         required
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className="w-full p-2 border border-gray-300 rounded text-gray-800" // Added text-gray-800
                     />
                     <button
                         type="submit"

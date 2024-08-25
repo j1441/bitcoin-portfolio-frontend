@@ -90,7 +90,7 @@ const Portfolio = () => {
                             onChange={(e) => setName(e.target.value)}
                             placeholder="Portfolio Name"
                             required
-                            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-orange-500"
+                            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-orange-500 text-gray-800" // Added text-gray-800
                         />
                         <input
                             type="number"
@@ -98,7 +98,7 @@ const Portfolio = () => {
                             onChange={(e) => setAmount(e.target.value)}
                             placeholder="Amount (BTC)"
                             required
-                            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-orange-500"
+                            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-orange-500 text-gray-800" // Added text-gray-800
                         />
                         <button
                             type="submit"
