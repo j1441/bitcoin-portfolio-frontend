@@ -9,10 +9,10 @@
     box-sizing: border-box;
 }
 
-/* Custom global styles */
 body {
-    @apply bg-orange-500 text-gray-800; /* Use Tailwind's classes for consistent theming */
     font-family: Arial, sans-serif;
+    background-color: #FF8C00; /* Darker orange background */
+    color: #FFFFFF; /* White text for better contrast */
     padding: 20px;
     min-height: 100vh;
 }
@@ -34,12 +34,14 @@ input {
 }
 
 button {
-    @apply bg-white text-orange-500 font-bold; /* Use Tailwind's classes */
+    background-color: #FFFFFF;
+    color: #FF8C00; /* Match button text with background color */
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-weight: bold;
 }
 
 button:hover {
-    @apply bg-orange-200; /* Use Tailwind's hover state */
+    background-color: #FFB347; /* Slightly lighter shade of orange for hover effect */
 }
