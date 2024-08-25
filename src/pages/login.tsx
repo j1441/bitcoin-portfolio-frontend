@@ -20,6 +20,8 @@ const Login = () => {
             router.push('/portfolio');
         } catch (error) {
             console.error('Login error:', error);
+            console.error('This is an error log');
+            console.warn('This is a warning log');
             setMessage('Login failed');
         }
     };
