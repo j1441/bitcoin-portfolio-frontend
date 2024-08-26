@@ -11,6 +11,8 @@ const HomePage = () => {
     logo.style.left = `${Math.random() * 100}vw`;
     document.body.appendChild(logo);
 
+    console.log('Logo added to DOM');
+
     logo.addEventListener('animationend', () => {
       logo.remove(); // Remove the logo after animation ends
     });
