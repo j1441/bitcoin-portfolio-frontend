@@ -52,8 +52,13 @@ const Portfolio = () => {
 
         const fetchBitcoinPrice = async () => {
             try {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/price`, { withCredentials: true });
-                setBitcoinPrice(response.data.price);
+                const response = await axios.get('https://api.coingecko.com/api/v3/simple/price', {
+                    params: {
+                        ids: 'bitcoin',
+                        vs_currencies: 'usd',
+                    },
+                });
+                setBitcoinPrice(response.data.bitcoin.usd);
             } catch (error) {
                 console.error('Failed to fetch Bitcoin price', error);
             }
@@ -61,7 +66,12 @@ const Portfolio = () => {
 
         const fetchHistoricalPrices = async () => {
             try {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/historical-prices`, { withCredentials: true });
+                const response = await axios.get('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart', {
+                    params: {
+                        vs_currency: 'usd',
+                        days: '30',
+                    },
+                });
                 setHistoricalPrices(response.data.prices);
             } catch (error) {
                 console.error('Failed to fetch historical Bitcoin prices', error);
