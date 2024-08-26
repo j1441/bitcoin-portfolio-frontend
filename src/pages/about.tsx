@@ -16,6 +16,15 @@ const About = () => {
                 <p className="text-gray-700">
                     This project was created as part of an application for a software development position. It demonstrates proficiency in full-stack development, including API design, frontend development, and deployment.
                 </p>
+                <p className="text-gray-700">
+                    The source code for the Next.js + TypeScript frontend can be found at: https://github.com/j1441/bitcoin-portfolio-frontend. 
+                </p>
+                <p className="text-gray-700">
+                    The source code for the Go and PostGreSQL backend can be found at https://github.com/j1441/bitcoin-portfolio-tracker. 
+                </p>
+                <p className="text-gray-700">
+                    The source code for the Flutter iOS app can be found at https://github.com/j1441/bitcoin_portfolio_app. 
+                </p>
             </div>
         </div>
     );
