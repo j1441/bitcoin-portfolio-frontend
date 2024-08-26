@@ -2,23 +2,25 @@ import React from 'react';
 import Link from 'next/link';
 
 const HomePage = () => {
+
+  // Function to create a single falling logo
+  const createFallingLogo = () => {
+    const logo = document.createElement('img');
+    logo.src = '/bitcoin.png';
+    logo.className = 'logo-rain';
+    logo.style.left = `${Math.random() * 100}vw`;
+    document.body.appendChild(logo);
+
+    logo.addEventListener('animationend', () => {
+      logo.remove(); // Remove the logo after animation ends
+    });
+  };
+
+  // Function to handle the click event
   const handleLogoClick = () => {
-    const container = document.createElement('div');
-    container.className = 'logo-rain-container';
-    document.body.appendChild(container);
-
-    for (let i = 0; i < 50; i++) {
-      const img = document.createElement('img');
-      img.src = '/bitcoin.png';
-      img.className = 'logo-rain';
-      img.style.left = `${Math.random() * 100}vw`; // Random horizontal position
-      img.style.animationDelay = `${Math.random() * 2}s`; // Random delay
-      container.appendChild(img);
+    for (let i = 0; i < 30; i++) { // Create 30 falling logos
+      setTimeout(createFallingLogo, i * 100); // Stagger the creation
     }
-
-    setTimeout(() => {
-      container.remove();
-    }, 5000); // Remove the container after 5 seconds
   };
 
   return (
@@ -41,9 +43,8 @@ const HomePage = () => {
         <img
           src="/bitcoin.png"
           alt="Bitcoin"
-          className="bitcoin-logo cursor-pointer"
-          onClick={handleLogoClick}
-          style={{ width: '100px', height: 'auto' }}
+          style={{ width: '100px', height: 'auto', cursor: 'pointer' }}
+          onClick={handleLogoClick} // Attach click handler
         />
       </div>
 
