@@ -64,7 +64,8 @@ button:hover {
     z-index: 9999;
     background-color: red; /* Temporary background to visualize */
     border: 1px solid blue; /* Temporary border to visualize */
-    animation: fall linear infinite;
+    animation: fall 5s linear infinite;
+    display: block;
 }
   
 
