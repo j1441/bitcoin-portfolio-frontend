@@ -1,4 +1,3 @@
-// pages/Portfolio.tsx
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
@@ -149,10 +148,10 @@ const Portfolio = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-orange-300">
+        <div className="min-h-screen flex flex-col items-center bg-orange-300">
             <Navigation />
-            <FeeEstimatorWidget /> {/* Add the fee estimator widget here */}
-            <div className="container mx-auto p-6 bg-white rounded shadow-md">
+            <FeeEstimatorWidget /> {/* Place the fee estimator widget in the corner */}
+            <div className="container mx-auto p-6 bg-white rounded shadow-md mt-8">
                 <h1 className="text-4xl font-bold text-orange-600 mb-6">Your Portfolios</h1>
                 
                 {/* Display total holdings */}
@@ -184,7 +183,9 @@ const Portfolio = () => {
                 <div className="mb-6 flex items-start">
                     <div className="mr-6">
                         <h2 className="text-2xl font-semibold text-orange-800 mb-4">Bitcoin Price and Portfolio Value Over Time</h2>
-                        <Line data={chartData} options={chartOptions} />
+                        <div className="w-full max-w-md">
+                            <Line data={chartData} options={chartOptions} />
+                        </div>
                     </div>
                 </div>
 
