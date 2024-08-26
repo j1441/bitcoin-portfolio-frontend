@@ -59,6 +59,20 @@ const HomePage = () => {
         />
       </div>
 
+      <div className="mb-8">
+        <div className="pulsating-logo-container">
+          <div className="pulsating-ring"></div>
+          <img
+            id="bitcoin-logo"
+            src="/bitcoin.png"
+            alt="Bitcoin"
+            style={{ width: '100px', height: 'auto', cursor: 'pointer' }}
+            onClick={handleLogoClick} // Attach click handler
+          />
+        </div>
+      </div>
+
+
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-md">
         <Link href="/login">
           <a className="block text-white bg-orange-500 px-6 py-4 rounded shadow hover:bg-orange-600 transition duration-300 text-lg">

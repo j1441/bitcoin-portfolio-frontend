@@ -70,3 +70,36 @@ button:hover {
     transform: translateY(110vh);
   }
 }
+
+/* Pulsating ring effect */
+.pulsating-logo-container {
+    position: relative;
+    display: inline-block;
+}
+
+.pulsating-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150%;
+    height: 150%;
+    background: rgba(255, 140, 0, 0.5);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0.8;
+    }
+    70% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+    }
+}
