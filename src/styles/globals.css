@@ -57,12 +57,15 @@ button:hover {
 }
 
 .logo-rain {
-  position: absolute;
-  top: -100px;
-  width: 30px;
-  height: auto;
-  animation: fall linear infinite;
+    position: absolute;
+    top: -100px;
+    width: 30px;
+    height: auto;
+    background-color: red; /* Temporary background to visualize */
+    border: 1px solid blue; /* Temporary border to visualize */
+    animation: fall linear infinite;
 }
+  
 
 @keyframes fall {
   to {
