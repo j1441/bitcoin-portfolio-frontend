@@ -13,17 +13,41 @@ const About = () => {
                     The backend is built with Go, utilizing secure authentication mechanisms and API integrations for real-time Bitcoin pricing.
                     The frontend is a responsive, fast, and accessible web application designed to work on all devices.
                 </p>
-                <p className="text-gray-700">
+                <p className="text-gray-700 mb-4">
                     This project was created as part of an application for a software development position. It demonstrates proficiency in full-stack development, including API design, frontend development, and deployment.
                 </p>
-                <p className="text-gray-700">
-                    The source code for the Next.js + TypeScript frontend can be found at: https://github.com/j1441/bitcoin-portfolio-frontend. 
+                <p className="text-gray-700 mb-4">
+                    The source code for the Next.js + TypeScript frontend can be found at: 
+                    <a 
+                        href="https://github.com/j1441/bitcoin-portfolio-frontend" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-orange-600 hover:underline"
+                    >
+                        https://github.com/j1441/bitcoin-portfolio-frontend
+                    </a>.
+                </p>
+                <p className="text-gray-700 mb-4">
+                    The source code for the Go and PostGreSQL backend can be found at: 
+                    <a 
+                        href="https://github.com/j1441/bitcoin-portfolio-tracker" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-orange-600 hover:underline"
+                    >
+                        https://github.com/j1441/bitcoin-portfolio-tracker
+                    </a>.
                 </p>
                 <p className="text-gray-700">
-                    The source code for the Go and PostGreSQL backend can be found at https://github.com/j1441/bitcoin-portfolio-tracker. 
-                </p>
-                <p className="text-gray-700">
-                    The source code for the Flutter iOS app can be found at https://github.com/j1441/bitcoin_portfolio_app. 
+                    The source code for the Flutter iOS app can be found at: 
+                    <a 
+                        href="https://github.com/j1441/bitcoin_portfolio_app" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-orange-600 hover:underline"
+                    >
+                        https://github.com/j1441/bitcoin_portfolio_app
+                    </a>.
                 </p>
             </div>
         </div>
