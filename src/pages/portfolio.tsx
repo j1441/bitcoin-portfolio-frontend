@@ -140,6 +140,7 @@ const Portfolio = () => {
 
     const chartOptions = {
         responsive: true,
+        maintainAspectRatio: false, // Allow better control of the chart size
         scales: {
             y: {
                 beginAtZero: false,
@@ -180,10 +181,10 @@ const Portfolio = () => {
                 </div>
 
                 {/* Display the chart */}
-                <div className="mb-6 flex items-start">
-                    <div className="mr-6">
+                <div className="mb-6 flex flex-col md:flex-row md:items-start">
+                    <div className="md:w-1/2">
                         <h2 className="text-2xl font-semibold text-orange-800 mb-4">Bitcoin Price and Portfolio Value Over Time</h2>
-                        <div className="w-full max-w-md">
+                        <div className="relative w-full h-64">
                             <Line data={chartData} options={chartOptions} />
                         </div>
                     </div>
