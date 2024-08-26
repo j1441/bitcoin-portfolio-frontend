@@ -17,7 +17,7 @@ const About = () => {
                     This project was created as part of an application for a software development position. It demonstrates proficiency in full-stack development, including API design, frontend development, and deployment.
                 </p>
                 <p className="text-gray-700 mb-4">
-                    The source code for the Next.js + TypeScript frontend can be found at: 
+                    The source code for the Next.js + TypeScript frontend can be found at:  
                     <a 
                         href="https://github.com/j1441/bitcoin-portfolio-frontend" 
                         target="_blank" 
@@ -28,7 +28,7 @@ const About = () => {
                     </a>.
                 </p>
                 <p className="text-gray-700 mb-4">
-                    The source code for the Go and PostGreSQL backend can be found at: 
+                    The source code for the Go and PostGreSQL backend can be found at:  
                     <a 
                         href="https://github.com/j1441/bitcoin-portfolio-tracker" 
                         target="_blank" 
@@ -39,7 +39,7 @@ const About = () => {
                     </a>.
                 </p>
                 <p className="text-gray-700">
-                    The source code for the Flutter iOS app can be found at: 
+                    The source code for the Flutter iOS app can be found at:  
                     <a 
                         href="https://github.com/j1441/bitcoin_portfolio_app" 
                         target="_blank" 
