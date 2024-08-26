@@ -39,6 +39,8 @@ const Portfolio = () => {
     const [bitcoinPrice, setBitcoinPrice] = useState<number | null>(null);
     const [historicalPrices, setHistoricalPrices] = useState<any[]>([]);
     const [timeRange, setTimeRange] = useState('30'); // Default time range is 30 days
+    const [currency, setCurrency] = useState('USD'); // Default currency is USD
+    const [conversionRate, setConversionRate] = useState(1); // Default conversion rate is 1 for USD
 
     useEffect(() => {
         const fetchPortfolios = async () => {
@@ -70,20 +72,34 @@ const Portfolio = () => {
             }
         };
 
+        const fetchConversionRate = async () => {
+            if (currency === 'NOK') {
+                try {
+                    const response = await axios.get('https://api.exchangerate-api.com/v4/latest/USD');
+                    setConversionRate(response.data.rates.NOK);
+                } catch (error) {
+                    console.error('Failed to fetch conversion rate', error);
+                }
+            } else {
+                setConversionRate(1); // Reset to 1 for USD
+            }
+        };
+
         fetchPortfolios();
         fetchBitcoinPrice();
         fetchHistoricalPrices();
-    }, [timeRange]);
+        fetchConversionRate();
+    }, [timeRange, currency]);
 
     useEffect(() => {
         if (portfolios.length > 0 && bitcoinPrice !== null) {
             calculateTotalHoldings(portfolios, bitcoinPrice);
         }
-    }, [portfolios, bitcoinPrice]);
+    }, [portfolios, bitcoinPrice, conversionRate]);
 
     const calculateTotalHoldings = (portfolios: Portfolio[], price: number) => {
         const total = portfolios.reduce((sum, portfolio) => sum + portfolio.amount * price, 0);
-        setTotalHoldings(total);
+        setTotalHoldings(total * conversionRate);
     };
 
     const handleCreatePortfolio = async (e: React.FormEvent) => {
@@ -127,19 +143,23 @@ const Portfolio = () => {
         }
     };
 
+    const handleCurrencyToggle = () => {
+        setCurrency((prevCurrency) => (prevCurrency === 'USD' ? 'NOK' : 'USD'));
+    };
+
     const chartData = {
         labels: historicalPrices.map(price => new Date(price[0]).toLocaleDateString()),
         datasets: [
             {
-                label: 'Bitcoin Price (USD)',
-                data: historicalPrices.map(price => price[1]),
+                label: `Bitcoin Price (${currency})`,
+                data: historicalPrices.map(price => price[1] * conversionRate),
                 borderColor: 'rgba(255, 99, 132, 1)',
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
             },
             {
-                label: 'Total Portfolio Value (USD)',
+                label: `Total Portfolio Value (${currency})`,
                 data: historicalPrices.map(price => {
-                    const correspondingPortfolioValue = portfolios.reduce((sum, portfolio) => sum + (portfolio.amount * price[1]), 0);
+                    const correspondingPortfolioValue = portfolios.reduce((sum, portfolio) => sum + (portfolio.amount * price[1] * conversionRate), 0);
                     return correspondingPortfolioValue;
                 }),
                 borderColor: 'rgba(54, 162, 235, 1)',
@@ -167,14 +187,24 @@ const Portfolio = () => {
                 
                 {/* Display total holdings */}
                 <div className="mb-6">
-                    <h2 className="text-2xl font-semibold text-orange-800">Total Holdings: ${totalHoldings.toFixed(2)}</h2>
+                    <h2 className="text-2xl font-semibold text-orange-800">Total Holdings: {currency} {totalHoldings.toFixed(2)}</h2>
                 </div>
 
                 {/* Display current Bitcoin price */}
                 <div className="mb-6">
                     <h2 className="text-2xl font-semibold text-orange-800">
-                        Current Bitcoin Price: {bitcoinPrice ? `$${bitcoinPrice.toFixed(2)}` : 'Loading...'}
+                        Current Bitcoin Price: {bitcoinPrice ? `${currency} ${(bitcoinPrice * conversionRate).toFixed(2)}` : 'Loading...'}
                     </h2>
+                </div>
+
+                {/* Display currency toggle */}
+                <div className="mb-6">
+                    <button
+                        onClick={handleCurrencyToggle}
+                        className="bg-orange-500 text-white px-4 py-2 rounded shadow hover:bg-orange-600 transition duration-300"
+                    >
+                        Toggle to {currency === 'USD' ? 'NOK' : 'USD'}
+                    </button>
                 </div>
 
                 {/* Display time range selection */}
@@ -205,7 +235,7 @@ const Portfolio = () => {
                         <li key={portfolio.id} className="bg-white p-4 rounded shadow-md flex justify-between items-center">
                             <div>
                                 <h2 className="text-2xl font-semibold text-orange-800">{portfolio.name}</h2>
-                                <p className="text-gray-700">{portfolio.amount} BTC (${portfolio.value_usd.toFixed(2)})</p>
+                                <p className="text-gray-700">{portfolio.amount} BTC ({currency} {(portfolio.amount * bitcoinPrice! * conversionRate).toFixed(2)})</p>
                             </div>
                             <button
                                 onClick={() => handleDeletePortfolio(portfolio.id)}
