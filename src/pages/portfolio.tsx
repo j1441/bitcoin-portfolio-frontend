@@ -1,3 +1,4 @@
+// pages/Portfolio.tsx
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
@@ -12,6 +13,7 @@ import {
     Legend,
 } from 'chart.js';
 import Navigation from '../components/Navigation';
+import FeeEstimatorWidget from '../components/FeeEstimatorWidget'; // Import the widget
 
 ChartJS.register(
     CategoryScale,
@@ -35,10 +37,9 @@ const Portfolio = () => {
     const [name, setName] = useState('');
     const [amount, setAmount] = useState('');
     const [totalHoldings, setTotalHoldings] = useState(0);
-    const [totalBtcHeld, setTotalBtcHeld] = useState(0);
     const [bitcoinPrice, setBitcoinPrice] = useState<number | null>(null);
     const [historicalPrices, setHistoricalPrices] = useState<any[]>([]);
-    const [timeScale, setTimeScale] = useState('30'); // Default to 30 days
+    const [timeRange, setTimeRange] = useState('30'); // Default time range is 30 days
 
     useEffect(() => {
         const fetchPortfolios = async () => {
@@ -54,12 +55,7 @@ const Portfolio = () => {
 
         const fetchBitcoinPrice = async () => {
             try {
-                const response = await axios.get('https://api.coingecko.com/api/v3/simple/price', {
-                    params: {
-                        ids: 'bitcoin',
-                        vs_currencies: 'usd',
-                    },
-                });
+                const response = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
                 setBitcoinPrice(response.data.bitcoin.usd);
             } catch (error) {
                 console.error('Failed to fetch Bitcoin price', error);
@@ -68,12 +64,7 @@ const Portfolio = () => {
 
         const fetchHistoricalPrices = async () => {
             try {
-                const response = await axios.get('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart', {
-                    params: {
-                        vs_currency: 'usd',
-                        days: timeScale, // Use selected time scale
-                    },
-                });
+                const response = await axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${timeRange}`);
                 setHistoricalPrices(response.data.prices);
             } catch (error) {
                 console.error('Failed to fetch historical Bitcoin prices', error);
@@ -83,13 +74,11 @@ const Portfolio = () => {
         fetchPortfolios();
         fetchBitcoinPrice();
         fetchHistoricalPrices();
-    }, [timeScale]);
+    }, [timeRange]);
 
     const calculateTotalHoldings = (portfolios: Portfolio[]) => {
-        const totalValue = portfolios.reduce((sum, portfolio) => sum + portfolio.value_usd, 0);
-        const totalBtc = portfolios.reduce((sum, portfolio) => sum + portfolio.amount, 0);
-        setTotalHoldings(totalValue);
-        setTotalBtcHeld(totalBtc);
+        const total = portfolios.reduce((sum, portfolio) => sum + portfolio.amount * (bitcoinPrice || 0), 0);
+        setTotalHoldings(total);
     };
 
     const handleCreatePortfolio = async (e: React.FormEvent) => {
@@ -129,14 +118,8 @@ const Portfolio = () => {
         }
     };
 
-    // Calculate portfolio value over time based on historical BTC prices
-    const portfolioValueOverTime = historicalPrices.map(([timestamp, price]: [number, number]) => ({
-        date: new Date(timestamp).toLocaleDateString(),
-        value: price * totalBtcHeld,
-    }));
-
     const chartData = {
-        labels: portfolioValueOverTime.map(entry => entry.date),
+        labels: historicalPrices.map(price => new Date(price[0]).toLocaleDateString()),
         datasets: [
             {
                 label: 'Bitcoin Price (USD)',
@@ -146,7 +129,10 @@ const Portfolio = () => {
             },
             {
                 label: 'Total Portfolio Value (USD)',
-                data: portfolioValueOverTime.map(entry => entry.value),
+                data: historicalPrices.map(price => {
+                    const correspondingPortfolioValue = portfolios.reduce((sum, portfolio) => sum + (portfolio.amount * price[1]), 0);
+                    return correspondingPortfolioValue;
+                }),
                 borderColor: 'rgba(54, 162, 235, 1)',
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
             },
@@ -155,7 +141,6 @@ const Portfolio = () => {
 
     const chartOptions = {
         responsive: true,
-        maintainAspectRatio: false,
         scales: {
             y: {
                 beginAtZero: false,
@@ -166,83 +151,86 @@ const Portfolio = () => {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-orange-300">
             <Navigation />
-            <div className="container mx-auto p-6 bg-white rounded shadow-md flex flex-col md:flex-row" style={{ minHeight: '400px' }}>
-                <div className="w-full md:w-1/2">
-                    <h1 className="text-4xl font-bold text-orange-600 mb-6">Your Portfolios</h1>
-                    
-                    {/* Display total holdings */}
-                    <div className="mb-6">
-                        <h2 className="text-2xl font-semibold text-orange-800">Total Holdings: ${totalHoldings.toFixed(2)}</h2>
-                    </div>
+            <FeeEstimatorWidget /> {/* Add the fee estimator widget here */}
+            <div className="container mx-auto p-6 bg-white rounded shadow-md">
+                <h1 className="text-4xl font-bold text-orange-600 mb-6">Your Portfolios</h1>
+                
+                {/* Display total holdings */}
+                <div className="mb-6">
+                    <h2 className="text-2xl font-semibold text-orange-800">Total Holdings: ${totalHoldings.toFixed(2)}</h2>
+                </div>
 
-                    {/* Display current Bitcoin price */}
-                    <div className="mb-6">
-                        <h2 className="text-2xl font-semibold text-orange-800">
-                            Current Bitcoin Price: {bitcoinPrice ? `$${bitcoinPrice.toFixed(2)}` : 'Loading...'}
-                        </h2>
-                    </div>
+                {/* Display current Bitcoin price */}
+                <div className="mb-6">
+                    <h2 className="text-2xl font-semibold text-orange-800">
+                        Current Bitcoin Price: {bitcoinPrice ? `$${bitcoinPrice.toFixed(2)}` : 'Loading...'}
+                    </h2>
+                </div>
 
-                    <ul className="space-y-4">
-                        {portfolios.map((portfolio) => (
-                            <li key={portfolio.id} className="bg-white p-4 rounded shadow-md flex justify-between items-center">
-                                <div>
-                                    <h2 className="text-2xl font-semibold text-orange-800">{portfolio.name}</h2>
-                                    <p className="text-gray-700">{portfolio.amount} BTC (${portfolio.value_usd.toFixed(2)})</p>
-                                </div>
-                                <button
-                                    onClick={() => handleDeletePortfolio(portfolio.id)}
-                                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
-                                >
-                                    Delete
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
+                {/* Display time range selection */}
+                <div className="mb-6">
+                    <label className="text-gray-800 mr-4">Select Time Range:</label>
+                    <select
+                        value={timeRange}
+                        onChange={(e) => setTimeRange(e.target.value)}
+                        className="p-2 border border-gray-300 rounded"
+                    >
+                        <option value="30">30 Days</option>
+                        <option value="365">1 Year</option>
+                    </select>
                 </div>
 
                 {/* Display the chart */}
-                <div className="w-full md:w-1/2 mt-6 md:mt-0 md:ml-6" style={{ height: '300px', width: '100%' }}>
-                    <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-2xl font-semibold text-orange-800">Bitcoin Price and Portfolio Value Over Time</h2>
-                        <select 
-                            value={timeScale}
-                            onChange={(e) => setTimeScale(e.target.value)}
-                            className="border border-gray-300 rounded p-2"
-                        >
-                            <option value="30">Last 30 Days</option>
-                            <option value="365">Last 1 Year</option>
-                        </select>
+                <div className="mb-6 flex items-start">
+                    <div className="mr-6">
+                        <h2 className="text-2xl font-semibold text-orange-800 mb-4">Bitcoin Price and Portfolio Value Over Time</h2>
+                        <Line data={chartData} options={chartOptions} />
                     </div>
-                    <Line data={chartData} options={chartOptions} />
                 </div>
-            </div>
 
-            <div className="mt-8 w-full md:w-1/2">
-                <h2 className="text-3xl font-bold text-orange-600 mb-4">Create New Portfolio</h2>
-                <form onSubmit={handleCreatePortfolio} className="space-y-4">
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="Portfolio Name"
-                        required
-                        className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-orange-500 text-gray-800"
-                    />
-                    <input
-                        type="number"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                        placeholder="Amount (BTC)"
-                        required
-                        className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-orange-500 text-gray-800"
-                    />
-                    <button
-                        type="submit"
-                        className="bg-orange-500 text-white px-6 py-3 rounded shadow hover:bg-orange-600 transition duration-300"
-                    >
-                        Create
-                    </button>
-                </form>
+                <ul className="space-y-4">
+                    {portfolios.map((portfolio) => (
+                        <li key={portfolio.id} className="bg-white p-4 rounded shadow-md flex justify-between items-center">
+                            <div>
+                                <h2 className="text-2xl font-semibold text-orange-800">{portfolio.name}</h2>
+                                <p className="text-gray-700">{portfolio.amount} BTC (${portfolio.value_usd.toFixed(2)})</p>
+                            </div>
+                            <button
+                                onClick={() => handleDeletePortfolio(portfolio.id)}
+                                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
+                            >
+                                Delete
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+                <div className="mt-8">
+                    <h2 className="text-3xl font-bold text-orange-600 mb-4">Create New Portfolio</h2>
+                    <form onSubmit={handleCreatePortfolio} className="space-y-4">
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="Portfolio Name"
+                            required
+                            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-orange-500 text-gray-800"
+                        />
+                        <input
+                            type="number"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                            placeholder="Amount (BTC)"
+                            required
+                            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-orange-500 text-gray-800"
+                        />
+                        <button
+                            type="submit"
+                            className="bg-orange-500 text-white px-6 py-3 rounded shadow hover:bg-orange-600 transition duration-300"
+                        >
+                            Create
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     );
