@@ -35,6 +35,7 @@ const Portfolio = () => {
     const [name, setName] = useState('');
     const [amount, setAmount] = useState('');
     const [totalHoldings, setTotalHoldings] = useState(0);
+    const [totalBtcHeld, setTotalBtcHeld] = useState(0);
     const [bitcoinPrice, setBitcoinPrice] = useState<number | null>(null);
     const [historicalPrices, setHistoricalPrices] = useState<any[]>([]);
 
@@ -84,8 +85,10 @@ const Portfolio = () => {
     }, []);
 
     const calculateTotalHoldings = (portfolios: Portfolio[]) => {
-        const total = portfolios.reduce((sum, portfolio) => sum + portfolio.value_usd, 0);
-        setTotalHoldings(total);
+        const totalValue = portfolios.reduce((sum, portfolio) => sum + portfolio.value_usd, 0);
+        const totalBtc = portfolios.reduce((sum, portfolio) => sum + portfolio.amount, 0);
+        setTotalHoldings(totalValue);
+        setTotalBtcHeld(totalBtc);
     };
 
     const handleCreatePortfolio = async (e: React.FormEvent) => {
@@ -125,8 +128,14 @@ const Portfolio = () => {
         }
     };
 
+    // Calculate portfolio value over time based on historical BTC prices
+    const portfolioValueOverTime = historicalPrices.map(([timestamp, price]: [number, number]) => ({
+        date: new Date(timestamp).toLocaleDateString(),
+        value: price * totalBtcHeld,
+    }));
+
     const chartData = {
-        labels: historicalPrices.map(price => new Date(price[0]).toLocaleDateString()),
+        labels: portfolioValueOverTime.map(entry => entry.date),
         datasets: [
             {
                 label: 'Bitcoin Price (USD)',
@@ -137,7 +146,7 @@ const Portfolio = () => {
             },
             {
                 label: 'Total Portfolio Value (USD)',
-                data: historicalPrices.map(() => totalHoldings),
+                data: portfolioValueOverTime.map(entry => entry.value),
                 borderColor: 'rgba(54, 162, 235, 1)',
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 yAxisID: 'y-axis-portfolio',
@@ -147,6 +156,7 @@ const Portfolio = () => {
 
     const chartOptions = {
         responsive: true,
+        maintainAspectRatio: false, // This makes the chart size more responsive
         scales: {
             'y-axis-bitcoin': {
                 type: 'linear' as const,
@@ -183,7 +193,7 @@ const Portfolio = () => {
                 </div>
 
                 {/* Display the chart */}
-                <div className="mb-6">
+                <div className="mb-6" style={{ height: '300px', width: '100%' }}>
                     <h2 className="text-2xl font-semibold text-orange-800 mb-4">Bitcoin Price and Portfolio Value Over Time</h2>
                     <Line data={chartData} options={chartOptions} />
                 </div>
