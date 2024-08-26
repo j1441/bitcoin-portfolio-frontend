@@ -46,7 +46,6 @@ const Portfolio = () => {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/portfolios`, { withCredentials: true });
                 const portfolios = response.data;
                 setPortfolios(portfolios);
-                calculateTotalHoldings(portfolios);
             } catch (error) {
                 console.error('Failed to fetch portfolios', error);
             }
@@ -55,7 +54,8 @@ const Portfolio = () => {
         const fetchBitcoinPrice = async () => {
             try {
                 const response = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-                setBitcoinPrice(response.data.bitcoin.usd);
+                const price = response.data.bitcoin.usd;
+                setBitcoinPrice(price);
             } catch (error) {
                 console.error('Failed to fetch Bitcoin price', error);
             }
@@ -75,8 +75,14 @@ const Portfolio = () => {
         fetchHistoricalPrices();
     }, [timeRange]);
 
-    const calculateTotalHoldings = (portfolios: Portfolio[]) => {
-        const total = portfolios.reduce((sum, portfolio) => sum + portfolio.amount * (bitcoinPrice || 0), 0);
+    useEffect(() => {
+        if (portfolios.length > 0 && bitcoinPrice !== null) {
+            calculateTotalHoldings(portfolios, bitcoinPrice);
+        }
+    }, [portfolios, bitcoinPrice]);
+
+    const calculateTotalHoldings = (portfolios: Portfolio[], price: number) => {
+        const total = portfolios.reduce((sum, portfolio) => sum + portfolio.amount * price, 0);
         setTotalHoldings(total);
     };
 
@@ -92,7 +98,9 @@ const Portfolio = () => {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/portfolios`, { withCredentials: true });
             const portfolios = response.data;
             setPortfolios(portfolios);
-            calculateTotalHoldings(portfolios);
+            if (bitcoinPrice !== null) {
+                calculateTotalHoldings(portfolios, bitcoinPrice);
+            }
         } catch (error) {
             console.error('Failed to create portfolio', error);
         }
@@ -110,7 +118,9 @@ const Portfolio = () => {
                 });
                 const updatedPortfolios = portfolios.filter((portfolio) => portfolio.id !== id);
                 setPortfolios(updatedPortfolios);
-                calculateTotalHoldings(updatedPortfolios);
+                if (bitcoinPrice !== null) {
+                    calculateTotalHoldings(updatedPortfolios, bitcoinPrice);
+                }
             } catch (error) {
                 console.error('Failed to delete portfolio', error);
             }
