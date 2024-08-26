@@ -8,6 +8,12 @@ const HomePage = () => {
     const logo = document.createElement('img');
     logo.src = '/bitcoin.png';
     logo.className = 'logo-rain';
+
+    // Randomize size with ±25% variation
+    const size = 30 + Math.random() * 15 - 7.5; // base 30px with ±25% variation
+    logo.style.width = `${size}px`;
+    logo.style.height = 'auto';
+
     logo.style.left = `${Math.random() * 100}vw`; // Random horizontal position
 
     // Randomize the fall speed between 3 to 7 seconds
