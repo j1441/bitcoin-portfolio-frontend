@@ -44,3 +44,27 @@ button {
 button:hover {
     background-color: #FFB347;
 }
+
+* Bitcoin logo rain effect */
+.logo-rain-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none; /* Clicks go through the container */
+  z-index: 1000; /* High z-index to be above everything else */
+}
+
+.logo-rain {
+  position: absolute;
+  top: -100px;
+  width: 30px;
+  height: auto;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+  }
+}

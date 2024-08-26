@@ -2,6 +2,25 @@ import React from 'react';
 import Link from 'next/link';
 
 const HomePage = () => {
+  const handleLogoClick = () => {
+    const container = document.createElement('div');
+    container.className = 'logo-rain-container';
+    document.body.appendChild(container);
+
+    for (let i = 0; i < 50; i++) {
+      const img = document.createElement('img');
+      img.src = '/bitcoin.png';
+      img.className = 'logo-rain';
+      img.style.left = `${Math.random() * 100}vw`; // Random horizontal position
+      img.style.animationDelay = `${Math.random() * 2}s`; // Random delay
+      container.appendChild(img);
+    }
+
+    setTimeout(() => {
+      container.remove();
+    }, 5000); // Remove the container after 5 seconds
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-orange-300 text-center p-6">
       <h1 className="text-4xl font-bold text-white mb-6">Welcome to the Bitcoin Portfolio Tracker</h1>
@@ -22,7 +41,9 @@ const HomePage = () => {
         <img
           src="/bitcoin.png"
           alt="Bitcoin"
-          style={{ width: '100px', height: 'auto' }} // Slightly larger size
+          className="bitcoin-logo cursor-pointer"
+          onClick={handleLogoClick}
+          style={{ width: '100px', height: 'auto' }}
         />
       </div>
 
