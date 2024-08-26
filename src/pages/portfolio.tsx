@@ -166,7 +166,7 @@ const Portfolio = () => {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-orange-300">
             <Navigation />
-            <div className="container mx-auto p-6 bg-white rounded shadow-md flex flex-col md:flex-row">
+            <div className="container mx-auto p-6 bg-white rounded shadow-md flex flex-col md:flex-row" style={{ minHeight: '400px' }}>
                 <div className="w-full md:w-1/2">
                     <h1 className="text-4xl font-bold text-orange-600 mb-6">Your Portfolios</h1>
                     
