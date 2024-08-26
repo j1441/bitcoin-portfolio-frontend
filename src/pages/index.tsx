@@ -8,12 +8,8 @@ const HomePage = () => {
     const logo = document.createElement('img');
     logo.src = '/bitcoin.png';
     logo.className = 'logo-rain';
-    //logo.style.left = `${Math.random() * 100}vw`;
-    console.log('Image created:', logo);
+    logo.style.left = `${Math.random() * 100}vw`; // Random horizontal position
     document.body.appendChild(logo);
-    console.log('Image added to body');
-
-    console.log('Logo added to DOM');
 
     logo.addEventListener('animationend', () => {
       logo.remove(); // Remove the logo after animation ends
