@@ -14,6 +14,7 @@ const Portfolio = () => {
     const [name, setName] = useState('');
     const [amount, setAmount] = useState('');
     const [totalHoldings, setTotalHoldings] = useState(0);
+    const [bitcoinPrice, setBitcoinPrice] = useState<number | null>(null);
 
     useEffect(() => {
         const fetchPortfolios = async () => {
@@ -27,7 +28,17 @@ const Portfolio = () => {
             }
         };
 
+        const fetchBitcoinPrice = async () => {
+            try {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/price`, { withCredentials: true });
+                setBitcoinPrice(response.data.price);
+            } catch (error) {
+                console.error('Failed to fetch Bitcoin price', error);
+            }
+        };
+
         fetchPortfolios();
+        fetchBitcoinPrice();
     }, []);
 
     const calculateTotalHoldings = (portfolios: Portfolio[]) => {
@@ -81,6 +92,13 @@ const Portfolio = () => {
                 {/* Display total holdings */}
                 <div className="mb-6">
                     <h2 className="text-2xl font-semibold text-orange-800">Total Holdings: ${totalHoldings.toFixed(2)}</h2>
+                </div>
+
+                {/* Display current Bitcoin price */}
+                <div className="mb-6">
+                    <h2 className="text-2xl font-semibold text-orange-800">
+                        Current Bitcoin Price: {bitcoinPrice ? `$${bitcoinPrice.toFixed(2)}` : 'Loading...'}
+                    </h2>
                 </div>
                 
                 <ul className="space-y-4">
