@@ -13,12 +13,15 @@ const Portfolio = () => {
     const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
     const [name, setName] = useState('');
     const [amount, setAmount] = useState('');
+    const [totalHoldings, setTotalHoldings] = useState(0);
 
     useEffect(() => {
         const fetchPortfolios = async () => {
             try {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/portfolios`, { withCredentials: true });
-                setPortfolios(response.data);
+                const portfolios = response.data;
+                setPortfolios(portfolios);
+                calculateTotalHoldings(portfolios);
             } catch (error) {
                 console.error('Failed to fetch portfolios', error);
             }
@@ -26,6 +29,11 @@ const Portfolio = () => {
 
         fetchPortfolios();
     }, []);
+
+    const calculateTotalHoldings = (portfolios: Portfolio[]) => {
+        const total = portfolios.reduce((sum, portfolio) => sum + portfolio.value_usd, 0);
+        setTotalHoldings(total);
+    };
 
     const handleCreatePortfolio = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -37,7 +45,9 @@ const Portfolio = () => {
             setName('');
             setAmount('');
             const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/portfolios`, { withCredentials: true });
-            setPortfolios(response.data);
+            const portfolios = response.data;
+            setPortfolios(portfolios);
+            calculateTotalHoldings(portfolios);
         } catch (error) {
             console.error('Failed to create portfolio', error);
         }
@@ -53,7 +63,9 @@ const Portfolio = () => {
                         'Content-Type': 'application/json',
                     },
                 });
-                setPortfolios(portfolios.filter((portfolio) => portfolio.id !== id));
+                const updatedPortfolios = portfolios.filter((portfolio) => portfolio.id !== id);
+                setPortfolios(updatedPortfolios);
+                calculateTotalHoldings(updatedPortfolios);
             } catch (error) {
                 console.error('Failed to delete portfolio', error);
             }
@@ -65,6 +77,12 @@ const Portfolio = () => {
             <Navigation />
             <div className="container mx-auto p-6 bg-white rounded shadow-md">
                 <h1 className="text-4xl font-bold text-orange-600 mb-6">Your Portfolios</h1>
+                
+                {/* Display total holdings */}
+                <div className="mb-6">
+                    <h2 className="text-2xl font-semibold text-orange-800">Total Holdings: ${totalHoldings.toFixed(2)}</h2>
+                </div>
+                
                 <ul className="space-y-4">
                     {portfolios.map((portfolio) => (
                         <li key={portfolio.id} className="bg-white p-4 rounded shadow-md flex justify-between items-center">
