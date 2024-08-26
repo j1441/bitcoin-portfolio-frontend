@@ -50,27 +50,17 @@ const HomePage = () => {
         </p>
       </div>
 
-      <div className="mb-8">
+      <div className="mb-8 pulsating-logo-container" onClick={handleLogoClick}>
+        <div className="pulsating-ring"></div>
         <img
+          id="bitcoin-logo"
           src="/bitcoin.png"
           alt="Bitcoin"
           style={{ width: '100px', height: 'auto', cursor: 'pointer' }}
-          onClick={handleLogoClick} // Attach click handler
         />
       </div>
 
-      <div className="mb-8">
-        <div className="pulsating-logo-container">
-          <div className="pulsating-ring"></div>
-          <img
-            id="bitcoin-logo"
-            src="/bitcoin.png"
-            alt="Bitcoin"
-            style={{ width: '100px', height: 'auto', cursor: 'pointer' }}
-            onClick={handleLogoClick} // Attach click handler
-          />
-        </div>
-      </div>
+      
 
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-md">
