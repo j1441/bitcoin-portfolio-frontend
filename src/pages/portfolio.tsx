@@ -1,6 +1,27 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Line } from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
 import Navigation from '../components/Navigation';
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
 interface Portfolio {
     id: number;
@@ -15,6 +36,7 @@ const Portfolio = () => {
     const [amount, setAmount] = useState('');
     const [totalHoldings, setTotalHoldings] = useState(0);
     const [bitcoinPrice, setBitcoinPrice] = useState<number | null>(null);
+    const [historicalPrices, setHistoricalPrices] = useState<any[]>([]);
 
     useEffect(() => {
         const fetchPortfolios = async () => {
@@ -37,8 +59,18 @@ const Portfolio = () => {
             }
         };
 
+        const fetchHistoricalPrices = async () => {
+            try {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/historical-prices`, { withCredentials: true });
+                setHistoricalPrices(response.data.prices);
+            } catch (error) {
+                console.error('Failed to fetch historical Bitcoin prices', error);
+            }
+        };
+
         fetchPortfolios();
         fetchBitcoinPrice();
+        fetchHistoricalPrices();
     }, []);
 
     const calculateTotalHoldings = (portfolios: Portfolio[]) => {
@@ -83,6 +115,45 @@ const Portfolio = () => {
         }
     };
 
+    const chartData = {
+        labels: historicalPrices.map(price => new Date(price[0]).toLocaleDateString()),
+        datasets: [
+            {
+                label: 'Bitcoin Price (USD)',
+                data: historicalPrices.map(price => price[1]),
+                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                yAxisID: 'y-axis-bitcoin',
+            },
+            {
+                label: 'Total Portfolio Value (USD)',
+                data: historicalPrices.map(() => totalHoldings),
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                yAxisID: 'y-axis-portfolio',
+            },
+        ],
+    };
+
+    const chartOptions = {
+        responsive: true,
+        scales: {
+            'y-axis-bitcoin': {
+                type: 'linear' as const,
+                display: true,
+                position: 'left' as const,
+            },
+            'y-axis-portfolio': {
+                type: 'linear' as const,
+                display: true,
+                position: 'right' as const,
+                grid: {
+                    drawOnChartArea: false,
+                },
+            },
+        },
+    };
+
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-orange-300">
             <Navigation />
@@ -100,7 +171,13 @@ const Portfolio = () => {
                         Current Bitcoin Price: {bitcoinPrice ? `$${bitcoinPrice.toFixed(2)}` : 'Loading...'}
                     </h2>
                 </div>
-                
+
+                {/* Display the chart */}
+                <div className="mb-6">
+                    <h2 className="text-2xl font-semibold text-orange-800 mb-4">Bitcoin Price and Portfolio Value Over Time</h2>
+                    <Line data={chartData} options={chartOptions} />
+                </div>
+
                 <ul className="space-y-4">
                     {portfolios.map((portfolio) => (
                         <li key={portfolio.id} className="bg-white p-4 rounded shadow-md flex justify-between items-center">
