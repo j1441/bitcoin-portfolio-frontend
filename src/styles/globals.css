@@ -30,6 +30,7 @@ input, button {
 input {
     border: 1px solid #ccc;
     border-radius: 4px;
+    color: #333; /* Ensure text color is visible */
 }
 
 button {
@@ -45,7 +46,7 @@ button:hover {
     background-color: #FFB347;
 }
 
-* Bitcoin logo rain effect */
+/* Bitcoin logo rain effect */
 .logo-rain-container {
   position: fixed;
   top: 0;
