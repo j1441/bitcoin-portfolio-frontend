@@ -142,34 +142,22 @@ const Portfolio = () => {
                 data: historicalPrices.map(price => price[1]),
                 borderColor: 'rgba(255, 99, 132, 1)',
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                yAxisID: 'y-axis-bitcoin',
             },
             {
                 label: 'Total Portfolio Value (USD)',
                 data: portfolioValueOverTime.map(entry => entry.value),
                 borderColor: 'rgba(54, 162, 235, 1)',
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                yAxisID: 'y-axis-portfolio',
             },
         ],
     };
 
     const chartOptions = {
         responsive: true,
-        maintainAspectRatio: false, // This makes the chart size more responsive
+        maintainAspectRatio: false,
         scales: {
-            'y-axis-bitcoin': {
-                type: 'linear' as const,
-                display: true,
-                position: 'left' as const,
-            },
-            'y-axis-portfolio': {
-                type: 'linear' as const,
-                display: true,
-                position: 'right' as const,
-                grid: {
-                    drawOnChartArea: false,
-                },
+            y: {
+                beginAtZero: false,
             },
         },
     };
@@ -177,70 +165,73 @@ const Portfolio = () => {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-orange-300">
             <Navigation />
-            <div className="container mx-auto p-6 bg-white rounded shadow-md">
-                <h1 className="text-4xl font-bold text-orange-600 mb-6">Your Portfolios</h1>
-                
-                {/* Display total holdings */}
-                <div className="mb-6">
-                    <h2 className="text-2xl font-semibold text-orange-800">Total Holdings: ${totalHoldings.toFixed(2)}</h2>
-                </div>
+            <div className="container mx-auto p-6 bg-white rounded shadow-md flex flex-col md:flex-row">
+                <div className="w-full md:w-1/2">
+                    <h1 className="text-4xl font-bold text-orange-600 mb-6">Your Portfolios</h1>
+                    
+                    {/* Display total holdings */}
+                    <div className="mb-6">
+                        <h2 className="text-2xl font-semibold text-orange-800">Total Holdings: ${totalHoldings.toFixed(2)}</h2>
+                    </div>
 
-                {/* Display current Bitcoin price */}
-                <div className="mb-6">
-                    <h2 className="text-2xl font-semibold text-orange-800">
-                        Current Bitcoin Price: {bitcoinPrice ? `$${bitcoinPrice.toFixed(2)}` : 'Loading...'}
-                    </h2>
+                    {/* Display current Bitcoin price */}
+                    <div className="mb-6">
+                        <h2 className="text-2xl font-semibold text-orange-800">
+                            Current Bitcoin Price: {bitcoinPrice ? `$${bitcoinPrice.toFixed(2)}` : 'Loading...'}
+                        </h2>
+                    </div>
+
+                    <ul className="space-y-4">
+                        {portfolios.map((portfolio) => (
+                            <li key={portfolio.id} className="bg-white p-4 rounded shadow-md flex justify-between items-center">
+                                <div>
+                                    <h2 className="text-2xl font-semibold text-orange-800">{portfolio.name}</h2>
+                                    <p className="text-gray-700">{portfolio.amount} BTC (${portfolio.value_usd.toFixed(2)})</p>
+                                </div>
+                                <button
+                                    onClick={() => handleDeletePortfolio(portfolio.id)}
+                                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
+                                >
+                                    Delete
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
 
                 {/* Display the chart */}
-                <div className="mb-6" style={{ height: '300px', width: '100%' }}>
+                <div className="w-full md:w-1/2 mt-6 md:mt-0 md:ml-6" style={{ height: '300px', width: '100%' }}>
                     <h2 className="text-2xl font-semibold text-orange-800 mb-4">Bitcoin Price and Portfolio Value Over Time</h2>
                     <Line data={chartData} options={chartOptions} />
                 </div>
+            </div>
 
-                <ul className="space-y-4">
-                    {portfolios.map((portfolio) => (
-                        <li key={portfolio.id} className="bg-white p-4 rounded shadow-md flex justify-between items-center">
-                            <div>
-                                <h2 className="text-2xl font-semibold text-orange-800">{portfolio.name}</h2>
-                                <p className="text-gray-700">{portfolio.amount} BTC (${portfolio.value_usd.toFixed(2)})</p>
-                            </div>
-                            <button
-                                onClick={() => handleDeletePortfolio(portfolio.id)}
-                                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
-                            >
-                                Delete
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-                <div className="mt-8">
-                    <h2 className="text-3xl font-bold text-orange-600 mb-4">Create New Portfolio</h2>
-                    <form onSubmit={handleCreatePortfolio} className="space-y-4">
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder="Portfolio Name"
-                            required
-                            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-orange-500 text-gray-800"
-                        />
-                        <input
-                            type="number"
-                            value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
-                            placeholder="Amount (BTC)"
-                            required
-                            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-orange-500 text-gray-800"
-                        />
-                        <button
-                            type="submit"
-                            className="bg-orange-500 text-white px-6 py-3 rounded shadow hover:bg-orange-600 transition duration-300"
-                        >
-                            Create
-                        </button>
-                    </form>
-                </div>
+            <div className="mt-8 w-full md:w-1/2">
+                <h2 className="text-3xl font-bold text-orange-600 mb-4">Create New Portfolio</h2>
+                <form onSubmit={handleCreatePortfolio} className="space-y-4">
+                    <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Portfolio Name"
+                        required
+                        className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-orange-500 text-gray-800"
+                    />
+                    <input
+                        type="number"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                        placeholder="Amount (BTC)"
+                        required
+                        className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-orange-500 text-gray-800"
+                    />
+                    <button
+                        type="submit"
+                        className="bg-orange-500 text-white px-6 py-3 rounded shadow hover:bg-orange-600 transition duration-300"
+                    >
+                        Create
+                    </button>
+                </form>
             </div>
         </div>
     );
