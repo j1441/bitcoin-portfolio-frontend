@@ -38,6 +38,7 @@ const Portfolio = () => {
     const [totalBtcHeld, setTotalBtcHeld] = useState(0);
     const [bitcoinPrice, setBitcoinPrice] = useState<number | null>(null);
     const [historicalPrices, setHistoricalPrices] = useState<any[]>([]);
+    const [timeScale, setTimeScale] = useState('30'); // Default to 30 days
 
     useEffect(() => {
         const fetchPortfolios = async () => {
@@ -70,7 +71,7 @@ const Portfolio = () => {
                 const response = await axios.get('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart', {
                     params: {
                         vs_currency: 'usd',
-                        days: '30',
+                        days: timeScale, // Use selected time scale
                     },
                 });
                 setHistoricalPrices(response.data.prices);
@@ -82,7 +83,7 @@ const Portfolio = () => {
         fetchPortfolios();
         fetchBitcoinPrice();
         fetchHistoricalPrices();
-    }, []);
+    }, [timeScale]);
 
     const calculateTotalHoldings = (portfolios: Portfolio[]) => {
         const totalValue = portfolios.reduce((sum, portfolio) => sum + portfolio.value_usd, 0);
@@ -201,7 +202,17 @@ const Portfolio = () => {
 
                 {/* Display the chart */}
                 <div className="w-full md:w-1/2 mt-6 md:mt-0 md:ml-6" style={{ height: '300px', width: '100%' }}>
-                    <h2 className="text-2xl font-semibold text-orange-800 mb-4">Bitcoin Price and Portfolio Value Over Time</h2>
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-2xl font-semibold text-orange-800">Bitcoin Price and Portfolio Value Over Time</h2>
+                        <select 
+                            value={timeScale}
+                            onChange={(e) => setTimeScale(e.target.value)}
+                            className="border border-gray-300 rounded p-2"
+                        >
+                            <option value="30">Last 30 Days</option>
+                            <option value="365">Last 1 Year</option>
+                        </select>
+                    </div>
                     <Line data={chartData} options={chartOptions} />
                 </div>
             </div>
