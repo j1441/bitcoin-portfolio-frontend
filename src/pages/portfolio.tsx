@@ -95,7 +95,7 @@ const Portfolio = () => {
         const fetchM2Change = async () => {
             try {
                 console.log('Fetching M2 change data...');
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/m2-change`, { withCredentials: true });
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/m2-change`, { withCredentials: true });
                 console.log('API response:', response.data);
                 setM2Change(response.data.m2_change);
             } catch (error) {
