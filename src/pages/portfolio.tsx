@@ -228,7 +228,7 @@ const Portfolio = () => {
                 {/* Display M2 and Bitcoin 12-Month Change */}
                 <div className="mb-6">
                     <h2 className="text-2xl font-semibold text-orange-800">
-                        12-Month NOK M2 Change (from SSB): {m2Change !== null ? `${m2Change.toFixed(2)}%` : 'Loading...'}
+                        12-Month NOK M2 Change (from): {m2Change !== null ? `${m2Change.toFixed(2)}%` : 'Loading...'}
                     </h2>
                     <h2 className="text-2xl font-semibold text-orange-800">
                         12-Month Bitcoin Change: {bitcoin12MonthChange !== null ? `${bitcoin12MonthChange.toFixed(2)}%` : 'Loading...'}
@@ -251,7 +251,7 @@ const Portfolio = () => {
                     <select
                         value={timeRange}
                         onChange={(e) => setTimeRange(e.target.value)}
-                        className="p-2 border border-gray-300 rounded"
+                        className="p-2 border border-gray-300 rounded text-gray-900" // Changed text color to a darker shade
                     >
                         <option value="365">1 Year</option>
                         <option value="30">30 Days</option>
