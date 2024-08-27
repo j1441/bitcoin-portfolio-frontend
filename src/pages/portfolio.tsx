@@ -38,7 +38,7 @@ const Portfolio = () => {
     const [totalHoldings, setTotalHoldings] = useState(0);
     const [bitcoinPrice, setBitcoinPrice] = useState<number | null>(null);
     const [historicalPrices, setHistoricalPrices] = useState<any[]>([]);
-    const [timeRange, setTimeRange] = useState('30'); // Default time range is 30 days
+    const [timeRange, setTimeRange] = useState('365'); // Default time range is 1 year
     const [currency, setCurrency] = useState('USD'); // Default currency is USD
     const [conversionRate, setConversionRate] = useState(1); // Default conversion rate is 1 for USD
     const [m2Change, setM2Change] = useState<number | null>(null);
@@ -258,8 +258,8 @@ const Portfolio = () => {
                         onChange={(e) => setTimeRange(e.target.value)}
                         className="p-2 border border-gray-300 rounded"
                     >
-                        <option value="30">30 Days</option>
                         <option value="365">1 Year</option>
+                        <option value="30">30 Days</option>
                     </select>
                 </div>
 
