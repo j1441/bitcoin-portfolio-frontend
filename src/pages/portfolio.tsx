@@ -231,7 +231,7 @@ const Portfolio = () => {
                         12-Month NOK M2 Change (from SSB): {m2Change !== null ? `${m2Change.toFixed(2)}%` : 'Loading...'}
                     </h2>
                     <h2 className="text-2xl font-semibold text-orange-800">
-                        12-Month Bitcoin Change: {bitcoin12MonthChange !== null ? `${bitcoin12MonthChange.toFixed(2)}%` : 'Loading...'}
+                        12-Month USD Bitcoin Change: {bitcoin12MonthChange !== null ? `${bitcoin12MonthChange.toFixed(2)}%` : 'Loading...'}
                     </h2>
                 </div>
 
