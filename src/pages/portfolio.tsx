@@ -41,6 +41,8 @@ const Portfolio = () => {
     const [timeRange, setTimeRange] = useState('30'); // Default time range is 30 days
     const [currency, setCurrency] = useState('USD'); // Default currency is USD
     const [conversionRate, setConversionRate] = useState(1); // Default conversion rate is 1 for USD
+    const [m2Change, setM2Change] = useState<number | null>(null);
+    const [bitcoin12MonthChange, setBitcoin12MonthChange] = useState<number | null>(null);
 
     useEffect(() => {
         const fetchPortfolios = async () => {
@@ -67,6 +69,11 @@ const Portfolio = () => {
             try {
                 const response = await axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${timeRange}`);
                 setHistoricalPrices(response.data.prices);
+
+                // Calculate the 12-month Bitcoin change only when the time range is 365 days
+                if (timeRange === '365') {
+                    calculateBitcoin12MonthChange(response.data.prices);
+                }
             } catch (error) {
                 console.error('Failed to fetch historical Bitcoin prices', error);
             }
@@ -85,10 +92,27 @@ const Portfolio = () => {
             }
         };
 
+        const fetchM2Change = async () => {
+            try {
+                const response = await axios.post('https://data.ssb.no/api/v0/dataset/172769.json?lang=no', {
+                    query: [],
+                    response: {
+                        format: 'json-stat2'
+                    }
+                });
+                const data = response.data;
+                const m2Growth = data.dataset.value[data.dataset.value.length - 1]; // Get the latest value
+                setM2Change(m2Growth);
+            } catch (error) {
+                console.error('Failed to fetch M2 change', error);
+            }
+        };
+
         fetchPortfolios();
         fetchBitcoinPrice();
         fetchHistoricalPrices();
         fetchConversionRate();
+        fetchM2Change();
     }, [timeRange, currency]);
 
     useEffect(() => {
@@ -100,6 +124,15 @@ const Portfolio = () => {
     const calculateTotalHoldings = (portfolios: Portfolio[], price: number) => {
         const total = portfolios.reduce((sum, portfolio) => sum + portfolio.amount * price, 0);
         setTotalHoldings(total * conversionRate);
+    };
+
+    const calculateBitcoin12MonthChange = (prices: any[]) => {
+        if (prices.length > 0) {
+            const currentPrice = prices[prices.length - 1][1];
+            const price12MonthsAgo = prices[0][1];
+            const change = ((currentPrice - price12MonthsAgo) / price12MonthsAgo) * 100;
+            setBitcoin12MonthChange(change);
+        }
     };
 
     const handleCreatePortfolio = async (e: React.FormEvent) => {
@@ -181,7 +214,7 @@ const Portfolio = () => {
     return (
         <div className="min-h-screen flex flex-col items-center bg-orange-300">
             <Navigation />
-            <FeeEstimatorWidget /> {/* Place the fee estimator widget in the corner */}
+            <FeeEstimatorWidget className="fixed top-4 right-4" /> {/* Place the fee estimator widget in the corner */}
             <div className="container mx-auto p-6 bg-white rounded shadow-md mt-8">
                 <h1 className="text-4xl font-bold text-orange-600 mb-6">Your Portfolios</h1>
                 
@@ -194,6 +227,16 @@ const Portfolio = () => {
                 <div className="mb-6">
                     <h2 className="text-2xl font-semibold text-orange-800">
                         Current Bitcoin Price: {bitcoinPrice ? `${currency} ${(bitcoinPrice * conversionRate).toFixed(2)}` : 'Loading...'}
+                    </h2>
+                </div>
+
+                {/* Display M2 and Bitcoin 12-Month Change */}
+                <div className="mb-6">
+                    <h2 className="text-2xl font-semibold text-orange-800">
+                        12-Month M2 Change: {m2Change !== null ? `${m2Change.toFixed(2)}%` : 'Loading...'}
+                    </h2>
+                    <h2 className="text-2xl font-semibold text-orange-800">
+                        12-Month Bitcoin Change: {bitcoin12MonthChange !== null ? `${bitcoin12MonthChange.toFixed(2)}%` : 'Loading...'}
                     </h2>
                 </div>
 

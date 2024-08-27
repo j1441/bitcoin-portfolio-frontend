@@ -2,11 +2,15 @@
 import React from 'react';
 import useFeeEstimator from '../hooks/useFeeEstimator';
 
-const FeeEstimatorWidget = () => {
+interface FeeEstimatorWidgetProps {
+    className?: string;
+}
+
+const FeeEstimatorWidget: React.FC<FeeEstimatorWidgetProps> = ({ className }) => {
     const fees = useFeeEstimator();
 
     return (
-        <div className="fixed top-4 right-4 bg-white p-4 rounded shadow-md">
+        <div className={`${className} bg-white p-4 rounded shadow-md`}>
             <h3 className="text-lg font-semibold text-gray-800 mb-2">Fee Estimator</h3>
             {fees ? (
                 <ul className="text-sm text-gray-700">
