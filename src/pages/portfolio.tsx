@@ -95,42 +95,13 @@ const Portfolio = () => {
         const fetchM2Change = async () => {
             try {
                 console.log('Fetching M2 change data...');
-                const response = await axios.post('https://data.ssb.no/api/v0/dataset/172769.json?lang=no', {
-                    query: [
-                        {
-                            code: "ContentsCode",
-                            selection: {
-                                filter: "item",
-                                values: ["M2TolvMndVekst"]
-                            }
-                        },
-                        {
-                            code: "Tid",
-                            selection: {
-                                filter: "top",
-                                values: ["1"] // Fetch the latest available data
-                            }
-                        }
-                    ],
-                    response: { format: "json-stat2" }
-                });
-        
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/m2-change`, { withCredentials: true });
                 console.log('API response:', response.data);
-        
-                const data = response.data.dataset;
-                if (data && data.value && data.value.length > 0) {
-                    const m2ChangeValue = data.value[0]; // Assuming we only need the most recent value
-                    console.log('M2 Change Value:', m2ChangeValue);
-                    setM2Change(m2ChangeValue);
-                } else {
-                    console.error('M2 data is not available or in the expected format');
-                }
+                setM2Change(response.data.m2_change);
             } catch (error) {
                 console.error('Failed to fetch M2 change', error);
             }
         };
-        
-        
 
         fetchPortfolios();
         fetchBitcoinPrice();
