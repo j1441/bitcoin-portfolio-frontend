@@ -94,33 +94,42 @@ const Portfolio = () => {
 
         const fetchM2Change = async () => {
             try {
+                console.log('Fetching M2 change data...');
                 const response = await axios.post('https://data.ssb.no/api/v0/dataset/172769.json?lang=no', {
                     query: [
                         {
-                            code: "statistikkvariabel",
+                            code: "ContentsCode",
                             selection: {
                                 filter: "item",
                                 values: ["M2TolvMndVekst"]
                             }
                         },
                         {
-                            code: "Maaned",
+                            code: "Tid",
                             selection: {
                                 filter: "top",
-                                values: ["1"] // To get the most recent data
+                                values: ["1"] // Fetch the latest available data
                             }
                         }
                     ],
                     response: { format: "json-stat2" }
                 });
-                
-                const data = response.data;
-                const m2ChangeValue = data.value[0]; // Assuming this is the correct path to extract the M2 change value
-                setM2Change(m2ChangeValue);
+        
+                console.log('API response:', response.data);
+        
+                const data = response.data.dataset;
+                if (data && data.value && data.value.length > 0) {
+                    const m2ChangeValue = data.value[0]; // Assuming we only need the most recent value
+                    console.log('M2 Change Value:', m2ChangeValue);
+                    setM2Change(m2ChangeValue);
+                } else {
+                    console.error('M2 data is not available or in the expected format');
+                }
             } catch (error) {
                 console.error('Failed to fetch M2 change', error);
             }
         };
+        
         
 
         fetchPortfolios();
